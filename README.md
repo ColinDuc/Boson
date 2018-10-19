@@ -1,2 +1,3 @@
 # BosonTeam
-# ReadMe du projet
+ReadMe du projet
+Il va falloir le tenir à jour !
