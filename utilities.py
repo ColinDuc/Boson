@@ -111,6 +111,12 @@ def definitive_res(res):
         i += 1
     return res
 
+def standardize(x):
+    centered_data = x - np.mean(x, axis=0)
+    std_data = centered_data #/ np.std(centered_data, axis=0)
+    
+    return std_data
+
 
 ####### POLY NEEDED ??? ########## 
 
