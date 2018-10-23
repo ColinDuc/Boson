@@ -7,6 +7,11 @@ def calculate_mse(e):
     """Calculate the mse for vector e."""
     return 1/2*np.mean(e**2)
 
+def compute_mse(y, tx, w):
+    """compute the loss by mse."""
+    e = y - tx.dot(w)
+    mse = e.dot(e) / (2 * len(e))
+    return mse
 
 def calculate_mae(e):
     """Calculate the mae for vector e."""
