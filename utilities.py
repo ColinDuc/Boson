@@ -123,7 +123,7 @@ def standardize(x):
     return std_data
 
 
-def split_data(x, y, K, seed=1):
+def split_data_K(x, y, K, seed=1):
     """split the dataset in K parts."""
     # set seed
     np.random.seed(seed)
@@ -144,6 +144,15 @@ def split_data(x, y, K, seed=1):
     return x_K, y_K
 
 
+def test_select(x_K,y_K,n):
+    if n>len(x_K):
+        print("n is greater than the length of x_K")
+        return
+    x_te=x_K[n]
+    y_te=y_K[n]
+    x_K.pop(n)
+    y_K.pop(n)
+    return x_K,y_K,x_te,y_te
 
 ####### POLY NEEDED ??? ########## 
 
