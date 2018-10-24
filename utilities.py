@@ -123,6 +123,30 @@ def standardize(x):
     return std_data
 
 
+def split_data_K(x, y, K, seed=1):
+    """split the dataset based on the split ratio."""
+    # set seed
+    np.random.seed(seed)
+    # generate random indices
+    num_row = len(y)
+    indices = np.random.permutation(num_row)
+    index_split = int(np.floor(num_row/K))
+    x_tr = []
+    x_te = []
+    y_tr = []
+    y_te = []
+    for i in range(K):
+        index_tr = indices[: i*index_split]
+        index_te = indices[i*index_split:]
+        # create split
+        x_tr.append(x[index_tr])
+        x_te.append(x[index_te])
+        y_tr.append(y[index_tr])
+        y_te.append(y[index_te])
+    return x_tr, x_te, y_tr, y_te
+
+
+
 ####### POLY NEEDED ??? ########## 
 
 
