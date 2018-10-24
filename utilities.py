@@ -123,7 +123,7 @@ def standardize(x):
     return std_data
 
 
-def split_data_K(x, y, K, seed=1):
+def split_data(x, y, K, seed=1):
     """split the dataset in K parts."""
     # set seed
     np.random.seed(seed)
@@ -141,18 +141,20 @@ def split_data_K(x, y, K, seed=1):
         # create split
         x_K.append(x[index])
         y_K.append(y[index])
-    return x_K, y_K
+    return np.asarray(x_K), np.asarray(y_K)
 
 
 def test_select(x_K,y_K,n):
     if n>len(x_K):
         print("n is greater than the length of x_K")
         return
+    x_train=x_K
+    y_train=y_K
     x_te=x_K[n]
     y_te=y_K[n]
-    x_K.pop(n)
-    y_K.pop(n)
-    return x_K,y_K,x_te,y_te
+    x_train=np.delete(x_train,n)
+    y_train=np.delete(y_train,n)
+    return x_train,y_train,x_te,y_te
 
 ####### POLY NEEDED ??? ########## 
 
