@@ -157,6 +157,48 @@ def test_select(x_K,y_K,n):
     y_train=np.delete(y_train,n)
     return x_train,y_train,x_te,y_te
 
+
+#SIGMOID FUNCTION
+def sigmoid(t):
+    """apply sigmoid function on t."""
+    
+    """ The positive and negative values of e are treated
+    separately to avoid overflows."""
+    
+    neg_ind=(t < 0)
+    pos_ind=(t > 0)
+    sig=np.zeros(t.shape)
+    
+    sig[neg_ind]=np.exp(t[neg_ind])/(1+np.exp(t[neg_ind]))
+    sig[pos_ind]=1/(1+np.exp(-t[pos_ind]))
+    return sig
+
+
+#LOGISTIC REGRESSION LOSS
+def logistic_loss(y, tx, w):
+    """Returns the loss associated calculated for the cost function: -log_likelihood"""
+    # ***************************************************
+    e=tx.dot(w)
+    
+    """ The positive and negative values of e are treated
+    separately to avoid overflows."""
+    log_term = np.log(1 + np.exp(-np.absolute(e))) + np.maximum(0, e)
+    return np.sum(log_term - y * e)
+#LOGISTIC REGRESSION GRADIENT
+def logistic_grad(y, tx, w):
+    """return the gradient"""
+    e=tx.dot(w)
+    sig_e=sigmoid(e)  
+    return (tx.T).dot(sig_e-y)
+
+
+#REGULARIZED LOGISTIC REGRESSION GRADIENT
+def reg_logistic_grad(y, tx, w, lambda_):
+    """return the gradient for the regularized logistic regression"""
+    e=tx.dot(w)
+    sig_e=sigmoid(e)
+
+    return (tx.T).dot(sig_e-y)+lambda_*w
 ####### POLY NEEDED ??? ########## 
 
 
