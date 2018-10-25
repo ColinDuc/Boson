@@ -18,19 +18,20 @@ def calculate_mae(e):
     return np.mean(np.abs(e))
 
 
-def compute_loss(y, tx, w):
-    """Calculate the loss.
+"""def compute_loss(y, tx, w):
+    Calculate the loss.
 
     You can calculate the loss using mse or mae.
-    """
+    
     e = y - tx.dot(w)
-    return calculate_mse(e)
+    return calculate_mse(e)"""
 
 def compute_gradient(y, tx, w):
     """Compute the gradient."""
     err = y - tx.dot(w)
     grad = -tx.T.dot(err) / len(err)
     return grad, err
+
 
 def compute_stoch_gradient(y, tx, w):
     """Compute a stochastic gradient from just few examples n and their corresponding y_n labels."""
@@ -123,7 +124,7 @@ def standardize(x):
     return std_data
 
 
-def split_data(x, y, K, seed=1):
+def split_data_K(x, y, K, seed=1):
     """split the dataset in K parts."""
     # set seed
     np.random.seed(seed)
