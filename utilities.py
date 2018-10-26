@@ -106,16 +106,24 @@ def train_test_split_demo(x, y, degree, ratio, seed):
     print("proportion={p}, degree={d}, Training RMSE={tr:.3f}, Testing RMSE={te:.3f}".format(
           p=ratio, d=degree, tr=rmse_tr, te=rmse_te))
     
-def definitive_res(res):      
-    #from the regression, need to choose if we assign +1 or -1. We assign -1 if the value is <0 and +1 if it is >=0.
-    i=0
-    while i < len(res):
-        if res[i] < 0:
-            res[i] = -1
+def definitive_res(x):      
+    """from the regression, need to choose if we assign +1 or -1. We assign -1 if the value is <0 and +1 if it is >=0"""
+    for i in range(len(x)):
+        if x[i] < 0:
+            x[i] = -1
         else:
-            res[i] = 1
-        i += 1
-    return res
+            x[i] = 1
+    return x
+
+def definitive_res_logistic(x, threshold):
+    """from the ligisitic regression, need to choose if we assign +1 or -1. But here we have a probability, thus we need a different classification than before."""
+    for i in range(len(x)):
+        if x[i] < threshold:
+            x[i] = -1
+        else:
+            x[i] = 1
+    return x
+          
 
 def standardize(x):
     centered_data = x - np.mean(x, axis=0)
@@ -184,6 +192,7 @@ def logistic_loss(y, tx, w):
     separately to avoid overflows."""
     log_term = np.log(1 + np.exp(-np.absolute(e))) + np.maximum(0, e)
     return np.sum(log_term - y * e)
+
 #LOGISTIC REGRESSION GRADIENT
 def logistic_grad(y, tx, w):
     """return the gradient"""
@@ -199,7 +208,16 @@ def reg_logistic_grad(y, tx, w, lambda_):
     sig_e=sigmoid(e)
 
     return (tx.T).dot(sig_e-y)+lambda_*w
-####### POLY NEEDED ??? ########## 
+
+#INTERACTION BETWEEN FEATURES
+def interaction_prod(x,k=0):
+    if k>len(x[0]) or k==0:
+        k=len(x[0])
+    for i in range(1,k):
+        for j in range(i):
+            print(i,j)
+            x = np.c_[x, x[:, i] * x[:, j]]
+    return x
 
 
 
