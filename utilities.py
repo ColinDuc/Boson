@@ -231,12 +231,11 @@ def interaction_prod(x,k=0,square=True):
 def interaction_prodbis(x,k=0,square=True):
     if k>len(x[0]) or k==0:
         k=len(x[0])
-    z=x[:,0 ] * x[:, 0]
     if square==True:
         a=0
     else:
         a=1   
-    for i in range(1,k):
+    for i in range(a,k):
         if square:
             for j in range(i+1):
                 print(i,j)
