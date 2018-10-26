@@ -210,17 +210,53 @@ def reg_logistic_grad(y, tx, w, lambda_):
     return (tx.T).dot(sig_e-y)+lambda_*w
 
 #INTERACTION BETWEEN FEATURES
-def interaction_prod(x,k=0):
+def interaction_prod(x,k=0,square=True):
     if k>len(x[0]) or k==0:
         k=len(x[0])
-    for i in range(1,k):
-        for j in range(i):
-            print(i,j)
-            x = np.c_[x, x[:, i] * x[:, j]]
+    if square==True:
+        a=0
+    else:
+        a=1
+    for i in range(a,k):
+        if square:
+            for j in range(i+1):
+                print(i,j)
+                x = np.c_[x, x[:, i] * x[:, j]]
+        else:
+            for j in range(i):
+                print(i,j)
+                x = np.c_[x, x[:, i] * x[:, j]]
     return x
 
+def interaction_prodbis(x,k=0,square=True):
+    if k>len(x[0]) or k==0:
+        k=len(x[0])
+    z=x[:,0 ] * x[:, 0]
+    if square==True:
+        a=0
+    else:
+        a=1   
+    for i in range(1,k):
+        if square:
+            for j in range(i+1):
+                print(i,j)
+                z = np.c_[z, x[:, i] * x[:, j]]
+        else:
+            for j in range(i):
+                print(i,j)
+                z = np.c_[z, x[:, i] * x[:, j]]
+    return z
 
-
+def separator_jet_num(x,indx):
+    x_0=x[x[:,indx]==0]
+    x_0=np.delete(x_0,indx,1)
+    x_1=x[x[:,indx]==1]
+    x_1=np.delete(x_1,indx,1)
+    x_2=x[x[:,indx]==2]
+    x_2=np.delete(x_2,indx,1)
+    x_3=x[x[:,indx]==3]    
+    x_3=np.delete(x_3,indx,1)
+    return x_0,x_1,x_2,x_3
 #""" ATTENTION PLOTS NON-COMPRIS"""
 
 #from plots import *
