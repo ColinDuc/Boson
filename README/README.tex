@@ -50,14 +50,14 @@ Then, the test data goes through the treatment described above: from replacing m
 
 \section{Implementations.py}
 
-This file contains the methods that were to be implemented. All of them return the predicted weights $w$ and the loss, but   i.e. :
+This file contains the methods that were to be implemented. All of them return the predicted weights $w$ and the loss. More precisely :
 \begin{itemize}
-\item[i)] \lstinline" least_squares_GD(y, tx, initial_w, max_iters, gamma) ": takes as input \lstinline" y " which is the vector of flags ($-1$ or $1$); \lstinline" tx " which is the matrix of features (in an order corresponding to \lstinline" y "); 
-\item[ii)]
-\item[iii)]
-\item[iv)]
-\item[v)]
-\item[vi)]
+\item[i)] \lstinline" least_squares_GD(y, tx, initial_w, max_iters, gamma) ": takes as input \lstinline" y " which is the vector of flags ($-1$ or $1$); \lstinline" tx " which is the matrix of features (in an order corresponding to \lstinline" y ") 
+\item[ii)] \lstinline" least_squares_SGD(y, tx, initial_w, batch_size, max_iters, gamma) "
+\item[iii)] \lstinline" least_squares(y, tx) "
+\item[iv)] \lstinline" ridge_regression(y, tx, lambda_) "
+\item[v)] \lstinline" logistic_regression(y, tx, initial_w, max_iters, gamma) "
+\item[vi)] \lstinline" reg_logistic_regression(y, tx, initial_w, max_iters, gamma, lambda_) "
 \end{itemize}
 
 \end{document}  
