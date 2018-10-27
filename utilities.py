@@ -3,58 +3,47 @@ import matplotlib.pyplot as plt
 
 # Utility Functions
 
+
+### Loss functions ###
+
 def calculate_mse(e):
-    """Calculate the mse for vector e."""
+    """Calculate mse for vector e"""
     return 1/2*np.mean(e**2)
 
 def compute_mse(y, tx, w):
-    """compute the loss by mse."""
-    e = y - tx.dot(w)
-    mse = e.dot(e) / (2 * len(e))
+    """compute the loss by mse"""
+    error = y - tx.dot(w)
+    mse = error.dot(error) / (2 * len(error))
     return mse
 
 def calculate_mae(e):
-    """Calculate the mae for vector e."""
+    """Calculate the mae for vector e"""
     return np.mean(np.abs(e))
 
 
-"""def compute_loss(y, tx, w):
-    Calculate the loss.
-
-    You can calculate the loss using mse or mae.
-    
-    e = y - tx.dot(w)
-    return calculate_mse(e)"""
+### Utilities for GD & SGD ###
 
 def compute_gradient(y, tx, w):
-    """Compute the gradient."""
-    err = y - tx.dot(w)
-    grad = -tx.T.dot(err) / len(err)
-    return grad, err
+    """Compute the gradient"""
+    error = y - tx.dot(w)
+    gradient = -tx.T.dot(error) / len(error)
+    return gradient, error
 
 
 def compute_stoch_gradient(y, tx, w):
-    """Compute a stochastic gradient from just few examples n and their corresponding y_n labels."""
-    err = y - tx.dot(w)
-    grad = -tx.T.dot(err) / len(err)
-    return grad, err
+    """Compute a stochastic gradient from just few examples n and their corresponding y_n labels"""
+    error = y - tx.dot(w)
+    gradient = -tx.T.dot(error) / len(error)
+    return gradient, error
 
-def build_poly(x, degree):
-    """polynomial basis functions for input data x, for j=0 up to j=degree."""
-    poly = np.ones((len(x), 1))
-    for deg in range(1, degree+1):
-        poly = np.c_[poly, np.power(x, deg)]
-    return poly
 
 def batch_iter(y, tx, batch_size, num_batches=1, shuffle=True):
     """
+    Useful for SGD
     Generate a minibatch iterator for a dataset.
     Takes as input two iterables (here the output desired values 'y' and the input data 'tx')
     Outputs an iterator which gives mini-batches of `batch_size` matching elements from `y` and `tx`.
     Data can be randomly shuffled to avoid ordering in the original data messing with the randomness of the minibatches.
-    Example of use :
-    for minibatch_y, minibatch_tx in batch_iter(y, tx, 32):
-        <DO-SOMETHING>
     """
     data_size = len(y)
 
@@ -70,11 +59,22 @@ def batch_iter(y, tx, batch_size, num_batches=1, shuffle=True):
         end_index = min((batch_num + 1) * batch_size, data_size)
         if start_index != end_index:
             yield shuffled_y[start_index:end_index], shuffled_tx[start_index:end_index]
+            
+            
+### Polynomial ###
 
-######### Split Data #############
+def build_poly(x, degree):
+    """ create polynomial basis functions for data x, for j = 0 up to j = degree"""
+    poly = np.ones((len(x), 1))
+    for deg in range(1, degree+1):
+        poly = np.c_[poly, np.power(x, deg)]
+    return poly
+
+        
+### Split Data ###
 
 def split_data(x, y, ratio, seed=1):
-    """split the dataset based on the split ratio."""
+    """split the dataset in two parts (training & test) based on the split ratio"""
     # set seed
     np.random.seed(seed)
     # generate random indices
@@ -83,57 +83,17 @@ def split_data(x, y, ratio, seed=1):
     index_split = int(np.floor(ratio * num_row))
     index_tr = indices[: index_split]
     index_te = indices[index_split:]
-    # create split
+    
+    # create split, we obtain a training set and a test set
     x_tr = x[index_tr]
     x_te = x[index_te]
     y_tr = y[index_tr]
     y_te = y[index_te]
     return x_tr, x_te, y_tr, y_te
 
-def train_test_split_demo(x, y, degree, ratio, seed):
-    """polynomial regression with different split ratios and different degrees."""
-    x_tr, x_te, y_tr, y_te = split_data(x, y, ratio, seed)
-    # form tx
-    tx_tr = build_poly(x_tr, degree)
-    tx_te = build_poly(x_te, degree)
-
-    weight = least_squares(y_tr, tx_tr)
-
-    # calculate RMSE for train and test data.
-    rmse_tr = np.sqrt(2 * compute_mse(y_tr, tx_tr, weight))
-    rmse_te = np.sqrt(2 * compute_mse(y_te, tx_te, weight))
-
-    print("proportion={p}, degree={d}, Training RMSE={tr:.3f}, Testing RMSE={te:.3f}".format(
-          p=ratio, d=degree, tr=rmse_tr, te=rmse_te))
-    
-def definitive_res(x):      
-    """from the regression, need to choose if we assign +1 or -1. We assign -1 if the value is <0 and +1 if it is >=0"""
-    for i in range(len(x)):
-        if x[i] < 0:
-            x[i] = -1
-        else:
-            x[i] = 1
-    return x
-
-def definitive_res_logistic(x, threshold):
-    """from the ligisitic regression, need to choose if we assign +1 or -1. But here we have a probability, thus we need a different classification than before."""
-    for i in range(len(x)):
-        if x[i] < threshold:
-            x[i] = -1
-        else:
-            x[i] = 1
-    return x
-          
-
-def standardize(x):
-    centered_data = x - np.mean(x, axis=0)
-    std_data = centered_data #/ np.std(centered_data, axis=0)
-    
-    return std_data
-
 
 def split_data_K(x, y, K, seed=1):
-    """split the dataset in K parts."""
+    """split the dataset in K parts, in egal parts"""
     # set seed
     np.random.seed(seed)
     # generate random indices
@@ -154,6 +114,7 @@ def split_data_K(x, y, K, seed=1):
 
 
 def test_select(x_K,y_K,n):
+    """ Choose one part to be the test set, the K-1 are the training set"""
     if n>len(x_K):
         print("n is greater than the length of x_K")
         return
@@ -164,15 +125,46 @@ def test_select(x_K,y_K,n):
     x_train=np.delete(x_train,n)
     y_train=np.delete(y_train,n)
     return x_train,y_train,x_te,y_te
+  
+        
+### Results ###
+    
+def definitive_res(x):      
+    """from the regression, need to choose if we assign +1 or -1. We assign -1 if the value is <0 and +1 if it is >=0"""
+    for i in range(len(x)):
+        if x[i] < 0:
+            x[i] = -1
+        else:
+            x[i] = 1
+    return x
 
 
-#SIGMOID FUNCTION
+def definitive_res_logistic(x, threshold):
+    """from the logistic regression, need to choose if we assign +1 or -1. But here we have a probability, thus we need a different classification than before"""
+    for i in range(len(x)):
+        if x[i] < threshold:
+            x[i] = -1
+        else:
+            x[i] = 1
+    return x
+          
+
+### Matrix standardization ###
+
+def standardize(x):
+    """Standardization"""
+    centered_data = x - np.mean(x, axis=0)
+    std_data = centered_data / np.std(centered_data, axis=0)
+    return std_data
+
+
+### SIGMOID FUNCTION  ###
+
 def sigmoid(t):
-    """apply sigmoid function on t."""
+    """apply sigmoid function on t"""
     
     """ The positive and negative values of e are treated
-    separately to avoid overflows."""
-    
+    separately to avoid overflows"""
     neg_ind=(t < 0)
     pos_ind=(t > 0)
     sig=np.zeros(t.shape)
@@ -182,10 +174,10 @@ def sigmoid(t):
     return sig
 
 
-#LOGISTIC REGRESSION LOSS
+### LOGISTIC REGRESSION LOSS ###
+
 def logistic_loss(y, tx, w):
     """Returns the loss associated calculated for the cost function: -log_likelihood"""
-    # ***************************************************
     e=tx.dot(w)
     
     """ The positive and negative values of e are treated
@@ -193,23 +185,29 @@ def logistic_loss(y, tx, w):
     log_term = np.log(1 + np.exp(-np.absolute(e))) + np.maximum(0, e)
     return np.sum(log_term - y * e)
 
-#LOGISTIC REGRESSION GRADIENT
+### LOGISTIC REGRESSION GRADIENT ###
+
 def logistic_grad(y, tx, w):
-    """return the gradient"""
+    """return the gradient for the logistic regression"""
     e=tx.dot(w)
     sig_e=sigmoid(e)  
     return (tx.T).dot(sig_e-y)
 
 
-#REGULARIZED LOGISTIC REGRESSION GRADIENT
+### REGULARIZED LOGISTIC REGRESSION GRADIENT ###
+
 def reg_logistic_grad(y, tx, w, lambda_):
     """return the gradient for the regularized logistic regression"""
     e=tx.dot(w)
     sig_e=sigmoid(e)
-
     return (tx.T).dot(sig_e-y)+lambda_*w
 
-#INTERACTION BETWEEN FEATURES
+
+### INTERACTION BETWEEN FEATURES ###     
+
+
+                                       #     """RAYAN !!!!!!!!"""
+
 def interaction_prod(x,k=0,square=True):
     if k>len(x[0]) or k==0:
         k=len(x[0])
@@ -256,35 +254,3 @@ def separator_jet_num(x,indx):
     x_3=x[x[:,indx]==3]    
     x_3=np.delete(x_3,indx,1)
     return x_0,x_1,x_2,x_3
-#""" ATTENTION PLOTS NON-COMPRIS"""
-
-#from plots import *
-
-#def polynomial_regression():
-#   """Constructing the polynomial basis function expansion of the data,
-#      and then running least squares regression."""
-#    # define parameters
-#    degrees = [1, 3, 7, 12]
-    
-    # define the structure of the figure
-#    num_row = 2
-#    num_col = 2
-#    f, axs = plt.subplots(num_row, num_col)
-
-#    for ind, degree in enumerate(degrees):
-        # form dataset to do polynomial regression.
-"""        tx = build_poly(x, degree)
-
-        # least squares
-        weights = least_squares(y, tx)
-
-        # compute RMSE
-        rmse = np.sqrt(2 * compute_mse(y, tx, weights))
-        print("Processing {i}th experiment, degree={d}, rmse={loss}".format(
-              i=ind + 1, d=degree, loss=rmse))
-        # plot fit
-        plot_fitted_curve(
-            y, x, weights, degree, axs[ind // num_col][ind % num_col])
-    plt.tight_layout()
-    plt.savefig("visualize_polynomial_regression")
-    plt.show() """

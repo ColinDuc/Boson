@@ -10,11 +10,10 @@ import matplotlib.pyplot as plt
 from proj1_helpers import *
 from utilities import *
 
-
 ### GRADIENT DESCENT ###
 
 def least_squares_GD(y, tx, initial_w, max_iters, gamma):
-    """Gradient descent algorithm."""
+    """Gradient descent algorithm"""
     # Define parameters to store w and loss
     #ws = [initial_w]
     #losses = []
