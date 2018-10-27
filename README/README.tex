@@ -49,7 +49,7 @@ The initial weights $w$ are random. The training is done using a regularized log
 
 Then, the test data goes through the treatment described above: from replacing missing values, to standardization. The predictions are performed then converted to the appropriate format $ \{ -1, 1 \}$ according to the best threshold (found via Kaggle). This process is repeated for each category of PRI\_jet\_num values $(0,1,2,3)$. The predictions are then rearranged to match the order of the original sample and put out using the \lstinline" csv " module. They can be found in the same folder as the \lstinline" run.py " script.
 
-\section{implementations.py}
+\section{implementations.py} \label{impl}
 
 This file contains the methods that were to be implemented : 
 \begin{itemize}
@@ -74,5 +74,14 @@ The inputs, when present, are :
 All of these methods return the predicted weights $w$ and the loss. They are to be used cautiously and basic knowledge in machine learning is assumed.
 
 \section{utilities.py}
+
+This file contains auxiliary methods that are used in the methods from \ref{impl}. One can find here the methods used to standardize, to calculate the gradient, to build polynomials from a matrix $x$. It contains also the methods used to manipulate the data i.e. the one used for cross-validation, to add new features by multiplying the old ones and to separate them into four samples.
+
+One can also find a method \lstinline" definitive_res_logistic(x, threshold) " that returns the decision $-1$ or $1$ from our matrix $x$ if the regression ligne is under or above a certain threshold.
+
+\section{proj1\_helpers.py}
+
+This file contains auxiliary routines that would otherwise make the script less readable. For most, they are of no interest by themselves and perform only data treatment like reading/writing from/in a \lstinline" csv " file.
+
 
 \end{document}  
