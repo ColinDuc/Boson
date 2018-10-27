@@ -43,7 +43,7 @@ Extract the \lstinline" .zip " and open the terminal at the location of the extr
 
 The script first loads the data and initializes the hyperparameters. The values provided initially coincide with the optimal values mentioned in the report. 
 
-First missing values are treated by deleting the columns where they occur. Then the script splits the training and test data into $3$ categories according to PRI\_jet\_num (see justification in the report). Then, a polynomial extension up ti the value of "degree" fallows. Finally, pairwise products of some if the features are performed. After this treatment, data is normalized and put in an appropriate format for the learning process.
+First missing values are treated by deleting the columns where they occur. Then the script splits the training and test data into $4$ categories according to PRI\_jet\_num (see justification in the report). Then, a polynomial extension up to the value of "degree" follows. Finally, pairwise products of some of the features are performed. After this treatment, data is normalized and put in an appropriate format for the learning process.
 
 The initial weights $w$ are random. The training is done using a regularized logistic regression, with parameter lambda. The optimal $w$ is approached via an iterative method: the gradient descent (see justification in report). The method outputs the optimal weights $w$ and the loss that corresponds to it.
 
@@ -59,7 +59,7 @@ This file contains the methods that were to be implemented :
 \item[iii)] \lstinline" least_squares(y, tx) ": performs a least squares regression using normal equations.
 \item[iv)] \lstinline" ridge_regression(y, tx, lambda_) ": performs a ridge regression using normal equations.
 \item[v)] \lstinline" logistic_regression(y, tx, initial_w, max_iters, gamma) ": performs a logistic regression using gradient descent.
-\item[vi)] \lstinline" reg_logistic_regression(y, tx, initial_w, max_iters, gamma, lambda_) ": performs la regularized logistic regression using a gradient descent.
+\item[vi)] \lstinline" reg_logistic_regression(y, tx, initial_w, max_iters, gamma, lambda_) ": performs a regularized logistic regression using a gradient descent.
 \end{itemize}
 The inputs, when present, are : 
 \begin{itemize}
@@ -68,7 +68,7 @@ The inputs, when present, are :
 \item \lstinline" initial_w " which is the starting weight for the iterative methods;
 \item \lstinline" max_iters " which sets the maximum number of iterations for the iterative methods;
 \item \lstinline" gamma " which is the step size for the iterative methods;
-\item \lstinline" lamda_ " which is the factor of penalization in the ridge regressions;
+\item \lstinline" lambda_ " which is the factor of penalization in the ridge regression;
 \end{itemize}
 
 All of these methods return the predicted weights $w$ and the loss. They are to be used cautiously and basic knowledge in machine learning is assumed.
