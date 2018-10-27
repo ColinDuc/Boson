@@ -1,0 +1,74 @@
+\documentclass[11pt, oneside]{article}   	% use "amsart" instead of "article" for AMSLaTeX format
+\usepackage{geometry}                		% See geometry.pdf to learn the layout options. There are lots.
+\geometry{letterpaper}                   		% ... or a4paper or a5paper or ... 
+%\geometry{landscape}                		% Activate for rotated page geometry
+%\usepackage[parfill]{parskip}    		% Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}				% Use pdf, png, jpg, or eps§ with pdflatex; use eps in DVI mode
+								% TeX will automatically convert eps --> pdf in pdflatex		
+\usepackage{amssymb}
+\usepackage{amsmath,amssymb}
+\usepackage{epsfig,graphicx,latexsym,mathdots}
+\usepackage{graphicx,amsfonts,dsfont,scalerel}
+%\usepackage{hyperref}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{framed}
+\usepackage[colorlinks]{hyperref}
+\usepackage{picture}
+\usepackage{wrapfig}
+\usepackage{float} 
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{listings}
+\usepackage[title]{appendix}
+\usepackage{upquote}
+
+%SetFonts
+
+\title{Project 1 : Searching for the Boson}
+\author{Ducommun Colin, Elalamy Rayan, Van de Velde Anne-Sophie}
+%\date{}							% Activate to display a given date or no date
+
+\begin{document}
+\maketitle
+\section{Introduction}
+In this project, we were given a set of datas on which we had to detect the Higgs Boson. To do so, we were given a training set \lstinline! train.csv ! on which we performed our training, and a test set \lstinline" test.csv " on which we performed our testing. We first had to clean and manipulate the data, and then we performed several different methods in order to predict whether or not the Boson was there. The intuition would be that the logistic regression would give us the best ratio, because all the other methods implemented were prediction methods and not classification methods.
+
+\section{Models and Methods}
+
+\subsection{Model based on the data}
+We first had a look on the features we were given. We saw that we had a lot of non-measured values, remplaced with $-999$. Since in certain columns their number was way too significant to be able to remplace them with the median or the average, we chose to delete the columns where there were some $-999$. To perform our first tests, we separated the features in two : a vector $y$ containing $-1$ and $1$ corresponding to the absence (resp. the presence) of the Boson, and a design matrix $z$ containing the features.
+
+Our approach consisted in separating the set training set in two : $80\%$ of training and $20\%$ of testing, to be able to test more simply our methods. 
+
+We then chose to add features by multiplying them together. This technic is quite classical in Machine Learning and adds some value to the results. Indeed our training was more performant once we added those new 'artificial' features. We then arrived at a new design matrix $z$.
+
+By looking more closely at the features, we also remarked that one of them was just consisting in integers going from $0$ to $3$. By looking more closely, we saw that the probability of the Boson being present was of $51\%$ when this feature was $1$, when this probability is only of $34\%$ in general. We thus separated the features in 4 groups : one for each value between $0$ and $3$, and performed our methods on each of those groups.
+
+
+\subsection{The methods}
+
+Our training consisted in the implementation of several methods : \begin{itemize}
+\item[i)] a linear regression using gradient descent, called \lstinline" least_squares_GD ",
+\item[ii)] a linear regression using stochastic gradient descent, called \lstinline" lest_squares_SGD ",
+\item[iii)] a least squares regression using normal equations, called \lstinline" least_squares ",
+\item[iv)] a ridge regression using normal equations, called \lstinline" ridge_regression ",
+\item[v)] a logistic regression using gradient descend, called \lstinline" logistic_regresssion ",
+\item[vi)] a regularized logistic regression, called \lstinline" reg_logisitic_regression ".
+\end{itemize} 
+We then compared these models and chose the appropriate one to find the Higgs Boson on \lstinline! test.csv !. To see more precisely how to use each method, one should read the README file provided with our project.
+
+\section{Results}
+
+For the linear GD and the linear SGD, our prediction did not exceed the $65\%$ of accuracy, while the least squares regression gave us an accuracy $80\%$.
+
+\section{Discussion}
+
+\section{Summary}
+
+
+%\subsection{}
+
+
+
+\end{document}  
