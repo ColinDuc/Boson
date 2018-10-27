@@ -1,0 +1,63 @@
+\documentclass[11pt, oneside]{article}   	% use "amsart" instead of "article" for AMSLaTeX format
+\usepackage{geometry}                		% See geometry.pdf to learn the layout options. There are lots.
+\geometry{letterpaper}                   		% ... or a4paper or a5paper or ... 
+%\geometry{landscape}                		% Activate for rotated page geometry
+%\usepackage[parfill]{parskip}    		% Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}				% Use pdf, png, jpg, or eps§ with pdflatex; use eps in DVI mode
+								% TeX will automatically convert eps --> pdf in pdflatex		
+\usepackage{amssymb}
+\usepackage{amsmath,amssymb}
+\usepackage{epsfig,graphicx,latexsym,mathdots}
+\usepackage{graphicx,amsfonts,dsfont,scalerel}
+%\usepackage{hyperref}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{framed}
+\usepackage[colorlinks]{hyperref}
+\usepackage{picture}
+\usepackage{wrapfig}
+\usepackage{float} 
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{listings}
+\usepackage[title]{appendix}
+\usepackage{upquote}
+
+%SetFonts
+\title{README : Searching for the Boson}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{Prerequisites}
+
+The code is written in Python3, and makes extensive use of Numpy, the fundamental package for scientific computing in Python. Another external module used is \lstinline" csv " - it intervenes in importing ghe flow of data to and from the Python environment, in order to read the data from a \lstinline" .csv " file and to write the predictions in a \lstinline" .csv " file respectively. Therefore the user must have both packages to run this code. For installation information, please refer to the Python documentation. 
+
+\section{Executing the code}
+
+Extract the \lstinline" .zip " and open the terminal at the location of the extracted files. Then enter: \lstinline" python.run.py ". The file \lstinline" run.py " contains an executable Python script that takes train data to compute a model. To see more details about the objective of this scrpit, one should read our report. The desired train and tests sets are to be put in a \lstinline" train.csv " and \lstinline" test.csv ", which are provided as placeholders. 
+
+\section{Description of the code}
+
+The script first loads the data and initializes the hyperparameters. The values provided initially coincide with the optimal values mentioned in the report. 
+
+First missing values are treated by deleting the columns where they occur. Then the script splits the training and test data into $3$ categories according to ***** (see justification in the report). Then, a polynomial extension up ti the value of "degree" fallows. Finally, pairwise products of some if the features are performed. After this treatment, data is normalized and put in an appropriate format for the learning process.
+
+The initial weights $w$ are random. The training is done using a regularized logistic regression, with parameter lambda. The optimal $w$ is approached via an iterative method: the gradient descent (see justification in report). The method outputs the optimal weights $w$ and the loss that corresponds to it.
+
+Then, the test data goes through the treatment described above: from replacing missing values, to standardization. The predictions are performed then converted to the appropriate format $ \{ -1, 1 \}$ according to the best threshold (found via Kaggle). This process is repeated for each category of ***** values $(0,1,2,3)$. The predictions are then rearranged to match the order of the original sample and put out using the \lstinline" csv " module. They can be found in the same folder as the \lstinline" run.py " script.
+
+\section{Implementations.py}
+
+This file contains the methods that were to be implemented. All of them return the predicted weights $w$ and the loss, but   i.e. :
+\begin{itemize}
+\item[i)] \lstinline" least_squares_GD(y, tx, initial_w, max_iters, gamma) ": takes as input \lstinline" y " which is the vector of flags ($-1$ or $1$); \lstinline" tx " which is the matrix of features (in an order corresponding to \lstinline" y "); 
+\item[ii)]
+\item[iii)]
+\item[iv)]
+\item[v)]
+\item[vi)]
+\end{itemize}
+
+\end{document}  
