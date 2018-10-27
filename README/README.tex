@@ -25,6 +25,7 @@
 
 %SetFonts
 \title{README : Searching for the Boson}
+\author{Ducommun Colin, Elelamy Rayan, Van de Velde Anne-Sophie}
 \date{}
 
 \begin{document}
@@ -42,22 +43,36 @@ Extract the \lstinline" .zip " and open the terminal at the location of the extr
 
 The script first loads the data and initializes the hyperparameters. The values provided initially coincide with the optimal values mentioned in the report. 
 
-First missing values are treated by deleting the columns where they occur. Then the script splits the training and test data into $3$ categories according to ***** (see justification in the report). Then, a polynomial extension up ti the value of "degree" fallows. Finally, pairwise products of some if the features are performed. After this treatment, data is normalized and put in an appropriate format for the learning process.
+First missing values are treated by deleting the columns where they occur. Then the script splits the training and test data into $3$ categories according to PRI\_jet\_num (see justification in the report). Then, a polynomial extension up ti the value of "degree" fallows. Finally, pairwise products of some if the features are performed. After this treatment, data is normalized and put in an appropriate format for the learning process.
 
 The initial weights $w$ are random. The training is done using a regularized logistic regression, with parameter lambda. The optimal $w$ is approached via an iterative method: the gradient descent (see justification in report). The method outputs the optimal weights $w$ and the loss that corresponds to it.
 
-Then, the test data goes through the treatment described above: from replacing missing values, to standardization. The predictions are performed then converted to the appropriate format $ \{ -1, 1 \}$ according to the best threshold (found via Kaggle). This process is repeated for each category of ***** values $(0,1,2,3)$. The predictions are then rearranged to match the order of the original sample and put out using the \lstinline" csv " module. They can be found in the same folder as the \lstinline" run.py " script.
+Then, the test data goes through the treatment described above: from replacing missing values, to standardization. The predictions are performed then converted to the appropriate format $ \{ -1, 1 \}$ according to the best threshold (found via Kaggle). This process is repeated for each category of PRI\_jet\_num values $(0,1,2,3)$. The predictions are then rearranged to match the order of the original sample and put out using the \lstinline" csv " module. They can be found in the same folder as the \lstinline" run.py " script.
 
-\section{Implementations.py}
+\section{implementations.py}
 
-This file contains the methods that were to be implemented. All of them return the predicted weights $w$ and the loss. More precisely :
+This file contains the methods that were to be implemented : 
 \begin{itemize}
-\item[i)] \lstinline" least_squares_GD(y, tx, initial_w, max_iters, gamma) ": takes as input \lstinline" y " which is the vector of flags ($-1$ or $1$); \lstinline" tx " which is the matrix of features (in an order corresponding to \lstinline" y ") 
-\item[ii)] \lstinline" least_squares_SGD(y, tx, initial_w, batch_size, max_iters, gamma) "
-\item[iii)] \lstinline" least_squares(y, tx) "
-\item[iv)] \lstinline" ridge_regression(y, tx, lambda_) "
-\item[v)] \lstinline" logistic_regression(y, tx, initial_w, max_iters, gamma) "
-\item[vi)] \lstinline" reg_logistic_regression(y, tx, initial_w, max_iters, gamma, lambda_) "
+\item[i)] \lstinline" least_squares_GD(y, tx, initial_w, max_iters, gamma) ": performs a linear regression using a gradient descent algorithm. 
+\item[ii)] \lstinline" least_squares_SGD(y, tx, initial_w, batch_size, max_iters, gamma) ": performs a linear regression using a stochastic gradient descent algorithm 
+
+\item[iii)] \lstinline" least_squares(y, tx) ": performs a least squares regression using normal equations.
+\item[iv)] \lstinline" ridge_regression(y, tx, lambda_) ": performs a ridge regression using normal equations.
+\item[v)] \lstinline" logistic_regression(y, tx, initial_w, max_iters, gamma) ": performs a logistic regression using gradient descent.
+\item[vi)] \lstinline" reg_logistic_regression(y, tx, initial_w, max_iters, gamma, lambda_) ": performs la regularized logistic regression using a gradient descent.
 \end{itemize}
+The inputs, when present, are : 
+\begin{itemize}
+\item \lstinline" y " which is a vector of flags (here it is an array of $-1$'s and $1$'s); 
+\item \lstinline" tx " which is the matrix of features (in an order corresponding to \lstinline" y ");
+\item \lstinline" initial_w " which is the starting weight for the iterative methods;
+\item \lstinline" max_iters " which sets the maximum number of iterations for the iterative methods;
+\item \lstinline" gamma " which is the step size for the iterative methods;
+\item \lstinline" lamda_ " which is the factor of penalization in the ridge regressions;
+\end{itemize}
+
+All of these methods return the predicted weights $w$ and the loss. They are to be used cautiously and basic knowledge in machine learning is assumed.
+
+\section{utilities.py}
 
 \end{document}  
