@@ -126,7 +126,41 @@ def test_select(x_K,y_K,n):
     y_train=np.delete(y_train,n)
     return x_train,y_train,x_te,y_te
   
-        
+    
+def build_k_indices(y, K, seed):
+    """build k array of indices of y"""
+    num_row = y.shape[0]
+    interval = int(num_row / K)
+    np.random.seed(seed)
+    indices = np.random.permutation(num_row)
+    K_indices = [indices[k * interval: (k + 1) * interval] for k in range(K)]
+    return np.array(K_indices)
+
+""" Perform Ridge Regression """
+def cross_validation(y, x, k_indices, k, lambda_, degree):
+    """return the loss of ridge regression"""
+    # set k is test set, the others are the training set
+    te_indice = k_indices[k]
+    tr_indice = k_indices[~(np.arange(k_indices.shape[0]) == k)]
+    tr_indice = tr_indice.reshape(-1)
+    y_te = y[te_indice]
+    y_tr = y[tr_indice]
+    x_te = x[te_indice]
+    x_tr = x[tr_indice]
+    
+    # form data with polynomial degree, using build_poly
+    tx_tr = build_poly(x_tr, degree)
+    tx_te = build_poly(x_te, degree)
+    
+    # perform ridge regression
+    w = ridge_regression(y_tr, tx_tr, lambda_)
+    
+    # calculate the loss for train and test data   A NOTER: ici, on calcule sqrt(2*mse) POURQUOI ?
+    loss_tr = np.sqrt(2 * compute_mse(y_tr, tx_tr, w))
+    loss_te = np.sqrt(2 * compute_mse(y_te, tx_te, w))
+    return loss_tr, loss_te,w
+
+
 ### Results ###
     
 def definitive_res(x):      
