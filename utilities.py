@@ -136,7 +136,7 @@ def build_k_indices(y, K, seed):
     K_indices = [indices[k * interval: (k + 1) * interval] for k in range(K)]
     return np.array(K_indices)
 
-""" Perform Ridge Regression """
+
 def cross_validation(y, x, k_indices, k, lambda_, degree):
     """return the loss of ridge regression"""
     # set k is test set, the others are the training set
@@ -160,16 +160,15 @@ def cross_validation(y, x, k_indices, k, lambda_, degree):
     loss_te = np.sqrt(2 * compute_mse(y_te, tx_te, w))
     return loss_tr, loss_te,w
 
+#def cross_validation_ALAIN(y, x, k_indices,
+
 
 ### Results ###
     
 def definitive_res(x):      
     """from the regression, need to choose if we assign +1 or -1. We assign -1 if the value is <0 and +1 if it is >=0"""
-    for i in range(len(x)):
-        if x[i] < 0:
-            x[i] = -1
-        else:
-            x[i] = 1
+    x[x<0] = -1
+    x[x>=0] = 1
     return x
 
 
@@ -278,13 +277,10 @@ def interaction_prodbis(x,k=0,square=True):
                 z = np.c_[z, x[:, i] * x[:, j]]
     return z
 
-def separator_jet_num(x,indx):
-    x_0=x[x[:,indx]==0]
-    x_0=np.delete(x_0,indx,1)
-    x_1=x[x[:,indx]==1]
-    x_1=np.delete(x_1,indx,1)
-    x_2=x[x[:,indx]==2]
-    x_2=np.delete(x_2,indx,1)
-    x_3=x[x[:,indx]==3]    
-    x_3=np.delete(x_3,indx,1)
-    return x_0,x_1,x_2,x_3
+##### CLASSIFICATION FROM JET_NUM ####
+
+def one_hot_jet_num(x,indx):
+    x = np.concatenate((x, np.zeros((len(x),4))), axis = 1)
+    for i in range(4):
+        x[:,-(i+1)] = (x[:,indx] == i).astype(float)
+    return np.delete(x,indx,1)
