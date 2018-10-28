@@ -41,9 +41,9 @@ We first had a look on the features we were given. We saw that we had a lot of n
 
 Our approach consisted in separating the set training set in two : $80\%$ of training and $20\%$ of testing, to be able to test more simply our methods. 
 
-We then chose to add features by multiplying them together. This technic is quite classical in Machine Learning and adds some value to the results. Indeed our training was more performant once we added those new 'artificial' features. We then arrived at a new design matrix $z$.
+We then chose to add features by multiplying them together. This technic is quite classical in Machine Learning and adds some value to the results. Indeed our training was more performant once we added those new 'artificial' features. We then arrived at a new design matrix $z$.\textbf{On a aussi décidé de traiter les features de façon polynomiale. Tout en gardant en tête que cela pourait causer de l'overfit. Par ailleurs cela impacte l'interprétation que l'on pourrait avoir des features (et donc l'aspect explanatory data analysis) mais le but de ce projet étant de réaliser la meilleure performance possible, nous avons priviligié de meilleures prédictions.}
 
-By looking more closely at the features, we also remarked that one of them was just consisting in integers going from $0$ to $3$. By looking more closely, we saw that the probability of the Boson being present was of $51\%$ when this feature was $1$, when this probability is only of $34\%$ in general. We thus separated the features in 4 groups : one for each value between $0$ and $3$, and performed our methods on each of those groups.
+By looking more closely at the features, we also remarked that one of them was just consisting in integers going from $0$ to $3$. We saw that the probability of the Boson being present was of $51\%$ when this feature was $2$, when this probability is only of $34\%$ in general. We thus separated the features in 4 groups : one for each value between $0$ and $3$, and performed our methods on each of those groups. 
 
 
 \subsection{The methods}
@@ -58,12 +58,21 @@ Our training consisted in the implementation of several methods : \begin{itemize
 \end{itemize} 
 We then compared these models and chose the appropriate one to find the Higgs Boson on \lstinline! test.csv !. To see more precisely how to use each method, one should read the README file provided with our project.
 
+\begin{itemize}
+    \item On a testé avec in hot au cas où il n'y aurait pas de hierarchie des états de jet_num
+    \item Pour le ridge regression on teste avec plusieurs lambdas et on choisit le lambda qui donne les meilleurs résultats (cela pourait causer de l'overfit mais il s'est avéré que cela donnait de meilleurs résultats que de prendre la moyenne des lambdas)
+\end{itemize}
+
 \section{Results}
-
-For the linear GD and the linear SGD, our prediction did not exceed the $65\%$ of accuracy, while the least squares regression gave us an accuracy $80\%$.
-
+For the linear GD and the linear SGD, our prediction did not exceed the $73\%$ of accuracy, while the least squares regression gave us an accuracy $80\%$.
+\textbf{La ridge regression a eu les meilleurs résultats 81\%.}. 
 \section{Discussion}
-
+\begin{itemize}
+    \item On aurait pu séparer la matrice en 4 et faire des poids optimisés pour chaque état de jet_num
+    \item Pour l'instant on n'a pas fait cross validation
+    \item On aurait pu faire la moyenne des weights de toutes les méthodes
+    \item On aurait pu s'intéréser plus profondemment à l'aspect physique pour pouvoir interpréter les variables
+\end{itemize}
 \section{Summary}
 
 
@@ -71,4 +80,4 @@ For the linear GD and the linear SGD, our prediction did not exceed the $65\%$ o
 
 
 
-\end{document}  
+\end{document} 
