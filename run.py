@@ -1,5 +1,4 @@
 import numpy as np
-from implementation import *
 from utilities import *
 
 
@@ -15,7 +14,7 @@ x_train_train, x_train_test, y_train_train, y_train_test = split_data(x_train,y_
 weight,lambda_=select_para_ridge(y_train_train,x_train_train,y_train_test,x_train_test) #selecting the best weights by using ridge regression
 
 print('Performing prediction based on the model')
-final_prediction=definitive_res(_test.dot(weight))
+final_prediction=definitive_res(x_test.dot(weight))
 
 print('Creating the final file with the predictions')
-create_csv_submission(ids_test,pred,"Final_Submission")
+create_csv_submission(ids_test,final_prediction,"Final_Submission")
