@@ -49,10 +49,10 @@ By looking more closely at the features, we also remarked that one of them (jet\
 
 \subsection{The methods}
 
-Our training consisted in the implementation of several methods:  a linear regression using gradient descent; a linear regression using stochastic gradient descent; a least squares regression using normal equations; a ridge regression using normal equations; a logistic regression using gradient descend; a regularized logistic regression. 
+Our training consisted in the implementation of several methods: a linear regression using gradient descent; a linear regression using stochastic gradient descent; a least squares regression using normal equations; a ridge regression using normal equations; a logistic regression using gradient descend; a regularized logistic regression. Moreover as the majority of these methods are prediction methods, we use the ratio of predictions as the loss.
 We then compared these models and chose the appropriate one to find the Higgs Boson on \lstinline! test.csv !. To see more precisely how to use each method, one should read the README file provided with our project.
 
-It is important to notice that we tested ridge regression with several $\lambda$'s, and then chose the one that gave us the best results.
+It is important to notice that we tested ridge regression with several $\lambda$'s, and then chose the one that gave us the best result. 
 
 \section{Results}
 For the linear GD and the linear SGD, our prediction did not exceed the $73\%$ of accuracy, while the least squares regression gave us an accuracy $80\%$. Logistic regression was not more performant than least squares. Overall, it is the ridge regression that gave us the best results with $81\%$ of accuracy.

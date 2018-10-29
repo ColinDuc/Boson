@@ -66,12 +66,12 @@ The inputs, when present, are :
 \item \lstinline" y " which is a vector of flags (here it is an array of $-1$'s and $1$'s); 
 \item \lstinline" tx " which is the matrix of features (in an order corresponding to \lstinline" y ");
 \item \lstinline" initial_w " which is the starting weight for the iterative methods;
-\item \lstinline" max_iters " which sets the maximum number of iterations for the iterative methods;
-\item \lstinline" gamma " which is the step size for the iterative methods;
+\item \lstinline" max_iters " which sets the maximum number of iterations for the iterative methods, set to $6000$ (but it should converge after $5000$ iterations);
+\item \lstinline" gamma " which is the step size for the iterative methods, set to $10^{-6}$ according to the length of the data set;
 \item \lstinline" lambda_ " which is the factor of penalization in the ridge regression;
 \end{itemize}
 
-All of these methods return the predicted weights $w$ and the loss. They are to be used cautiously and basic knowledge in machine learning is assumed.
+All of these methods return the predicted weights $w$ and the loss, which is the ration of predictions (see report). They are to be used cautiously and basic knowledge in machine learning is assumed.
 
 \section{utilities.py}
 

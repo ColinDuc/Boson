@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.11.18)  29 OCT 2018 11:43
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.11.18)  29 OCT 2018 17:48
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -637,7 +637,7 @@ Package rerunfilecheck Info: File `Proj1.out' has not changed.
 Here is how much of TeX's memory you used:
  10009 strings out of 492995
  148395 string characters out of 6132703
- 245569 words of memory out of 5000000
+ 246569 words of memory out of 5000000
  13404 multiletter control sequences out of 15000+600000
  11831 words of font info for 50 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -648,7 +648,7 @@ Here is how much of TeX's memory you used:
 usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></us
 r/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/
 local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
-Output written on Proj1.pdf (2 pages, 78755 bytes).
+Output written on Proj1.pdf (2 pages, 78844 bytes).
 PDF statistics:
  72 PDF objects out of 1000 (max. 8388607)
  61 compressed objects within 1 object stream
