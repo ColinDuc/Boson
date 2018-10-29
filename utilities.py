@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-
+from utilities import *
 # Utility Functions
 
 
@@ -70,7 +70,15 @@ def build_poly(x, degree):
         poly = np.c_[poly, np.power(x, deg)]
     return poly
 
-        
+def build_poly_with_one_hot(x,degree,indx,cross=False,degree_cross=2):
+    print(x)
+    z1=one_hot_jet_num_bis(x,indx)
+    x=np.delete(x,indx,1)
+    print(x)
+    if cross:
+        z2=interaction_prodbis(x)
+        z2=build_poly(z2,degree_cross)
+    return np.c_[build_poly(x,degree),z2, z1]
 ### Split Data ###
 
 def split_data(x, y, ratio, seed=1):
@@ -236,47 +244,80 @@ def reg_logistic_grad(y, tx, w, lambda_):
     return (tx.T).dot(sig_e-y)+lambda_*w
 
 
-### INTERACTION BETWEEN FEATURES ###     
+### Data Processing ###     
 
 
                                        #     """RAYAN !!!!!!!!"""
 
-def interaction_prod(x,k=0,square=True):
-    if k>len(x[0]) or k==0:
-        k=len(x[0])
-    if square==True:
-        a=0
-    else:
-        a=1
-    for i in range(a,k):
-        if square:
-            for j in range(i+1):
-                print(i,j)
-                x = np.c_[x, x[:, i] * x[:, j]]
-        else:
-            for j in range(i):
-                print(i,j)
-                x = np.c_[x, x[:, i] * x[:, j]]
-    return x
 
-def interaction_prodbis(x,k=0,square=True):
+def interaction_prod(x,k=0,square=True):
+    """Create the matrix of the interactions between the features of x"""
     if k>len(x[0]) or k==0:
         k=len(x[0])
     if square==True:
-        a=0
+        a=1
+        z=x[:,0]*x[:,0]
     else:
-        a=1   
-    for i in range(a,k):
-        if square:
-            for j in range(i+1):
-                print(i,j)
-                z = np.c_[z, x[:, i] * x[:, j]]
-        else:
-            for j in range(i):
-                print(i,j)
+        a=0
+        z=x[:,0]*x[:,1]
+    for i in range(1-a,k):
+        for j in range(i+a):
+            if i!=1 and j!=0 or square:
                 z = np.c_[z, x[:, i] * x[:, j]]
     return z
 
+def replace_by_NaN(x):
+    """replace all the -999 values in x by NaN"""
+    x[x==-999]=np.NaN
+    return x
+
+def matrix_without_NaN(x):
+    """Return x without the column in which there is a NaN value"""
+    z=x[:,~np.isnan(x).any(axis=0)]
+    return z
+
+def matrix_without_missing(x):
+    """Return x without the column in which there is a -999 value"""
+    z=replace_by_NaN(x)
+    z=matrix_without_NaN(x)
+    return z
+
+def data_final(x,degree=1,degree_inter=1):
+    """Return the data matrix with all the features treated (removing -999 and expanded with build_poly) """
+    x=matrix_without_missing(x) 
+    x_1=interaction_prod(x,0,False) #Interaction between features
+    x_2 = build_poly(x,degree) #Build polynomial of the features
+    x_3=build_poly(x_1,degree_inter) #Build polynomial of the interactions
+    return np.c_[x_2,x_3] #merge the features and the interactions
+
+def ratio_prediction(test,x,w):
+    """Return the ratio of good predictions"""
+    pred=definitive_res(x.dot(w))
+    return len(test[test==pred])/len(test)
+
+
+def ratio_prediction_threshold(test,x,w,threshold):
+    pred=definitive_res_logistic(x.dot(w),threshold)
+    return len(test[test==pred])/len(test) 
+
+def add_ones(x):
+    "add a column of 1's to x"
+    x=np.column_stack((x, np.ones(x.shape[0])))
+    return x
+
+def select_para_ridge(y,x,y_te,x_te,lmin=-10,lmax=0,n=10):
+    "return the best lambda for ridge regression to use with the training set and the weights associated with it"
+    ratio=[]
+    weights=[]
+    lambdas = np.logspace(lmin, lmax, n)
+    for ind, lambda_ in enumerate(lambdas):
+        weight = ridge_regression(y, x, lambda_)
+        ratio.append(ratio_prediction(y_te,x_te,weight))
+        weights.append(weight)
+    indx=np.argmax(ratio)
+    return weights[indx],lambdas[indx]
+
+    
 ##### CLASSIFICATION FROM JET_NUM ####
 
 def one_hot_jet_num(x,indx):
@@ -284,3 +325,9 @@ def one_hot_jet_num(x,indx):
     for i in range(4):
         x[:,-(i+1)] = (x[:,indx] == i).astype(float)
     return np.delete(x,indx,1)
+
+def one_hot_jet_num_bis(x,indx):
+    z=np.zeros((len(x),4))
+    for i in range(4):
+        z[:,-(i+1)] = (x[:,indx] == i).astype(float)
+    return z
