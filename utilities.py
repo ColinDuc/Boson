@@ -218,12 +218,11 @@ def sigmoid(t):
 ### LOGISTIC REGRESSION LOSS ###
 
 def logistic_loss(y, tx, w):
-    """Returns the loss associated calculated for the cost function: -log_likelihood"""
+    """Returns the loss associated to the log likelihood"""
     e=tx.dot(w)
     
-    """ The positive and negative values of e are treated
-    separately to avoid overflows."""
-    log_term = np.log(1 + np.exp(-np.absolute(e))) + np.maximum(0, e)
+    """ To avoid infinite values, we slightly modify the log_term"""
+    log_term = np.maximum(0, e) + np.log(1 + np.exp(-np.absolute(e))) 
     return np.sum(log_term - y * e)
 
 ### LOGISTIC REGRESSION GRADIENT ###
@@ -245,9 +244,6 @@ def reg_logistic_grad(y, tx, w, lambda_):
 
 
 ### Data Processing ###     
-
-
-                                       #     """RAYAN !!!!!!!!"""
 
 
 def interaction_prod(x,k=0,square=True):
@@ -291,22 +287,23 @@ def data_final(x,degree=7,degree_inter=5):
     return np.c_[x_2,x_3] #merge the features and the interactions
 
 def ratio_prediction(test,x,w):
-    """Return the ratio of good predictions"""
+    """Return the ratio of good predictions according to the test matrix"""
     pred=definitive_res(x.dot(w))
     return len(test[test==pred])/len(test)
 
 
 def ratio_prediction_threshold(test,x,w,threshold):
+    """Return the ratio of good predictions according to the test matrix"""
     pred=definitive_res_logistic(x.dot(w),threshold)
     return len(test[test==pred])/len(test) 
 
 def add_ones(x):
-    "add a column of 1's to x"
+    """add a column of 1's to x"""
     x=np.column_stack((x, np.ones(x.shape[0])))
     return x
 
 def select_para_ridge(y,x,y_te,x_te,lmin=-10,lmax=0,n=10):
-    "return the best lambda for ridge regression to use with the training set and the weights associated with it"
+    """return the best lambda for ridge regression to use with the training set and the weights associated with it"""
     ratio=[]
     weights=[]
     lambdas = np.logspace(lmin, lmax, n)
@@ -321,12 +318,14 @@ def select_para_ridge(y,x,y_te,x_te,lmin=-10,lmax=0,n=10):
 ##### CLASSIFICATION FROM JET_NUM ####
 
 def one_hot_jet_num(x,indx):
+    """return the design matrix with jet_num column replaced by 4 column"""
     x = np.concatenate((x, np.zeros((len(x),4))), axis = 1)
     for i in range(4):
         x[:,-(i+1)] = (x[:,indx] == i).astype(float)
     return np.delete(x,indx,1)
 
 def one_hot_jet_num_bis(x,indx):
+    """return the matrix  corresponding to the jet_num column replaced by 4 column"""
     z=np.zeros((len(x),4))
     for i in range(4):
         z[:,-(i+1)] = (x[:,indx] == i).astype(float)
