@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from utilities import *
+from implementation import *
 # Utility Functions
 
 
@@ -282,7 +282,7 @@ def matrix_without_missing(x):
     z=matrix_without_NaN(x)
     return z
 
-def data_final(x,degree=1,degree_inter=1):
+def data_final(x,degree=7,degree_inter=5):
     """Return the data matrix with all the features treated (removing -999 and expanded with build_poly) """
     x=matrix_without_missing(x) 
     x_1=interaction_prod(x,0,False) #Interaction between features
