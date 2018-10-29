@@ -25,7 +25,7 @@ def least_squares_GD(y, tx, initial_w, max_iters, gamma):
         # gradient w by descent update
         w = w - gamma * grad
 
-    return w#,loss
+    return w,loss
 
 
 ### STOCHASTIC GRADIENT DESCENT ###
